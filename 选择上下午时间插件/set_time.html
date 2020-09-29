@@ -1,0 +1,81 @@
+<html>
+<title>时间设置</title>
+<meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="./css/common.css">
+<link rel="stylesheet" href="./css/set_time.css">
+<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+
+<style>
+    
+</style>
+
+<body>
+    <div class="container">
+        <span class="title">时间设置</span>
+        <div class="time_swiper rows">
+            <div class="sel_time"></div>
+            <div class="date_item noon column">
+                <div class="item noon_item">&nbsp;</div>
+                <div class="item noon_item">&nbsp;</div>
+                <div class="item noon_item sel_item">上午</div>
+                <div class="item noon_item">下午</div>
+                <div class="item noon_item">&nbsp;</div>
+                <div class="item noon_item">&nbsp;</div>
+            </div>
+            <div class="date_item hour column"></div>
+            <div class="date_item min column"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="./js/time_picker.js"></script>
+<script>
+    var set_hour = new time_picker("hour", 1, 13);
+    var set_min = new time_picker("min", 0, 60);
+    // 初始化
+    set_hour.set_time()
+    set_min.set_time();
+
+    // 滚动
+    set_hour.Scroll()
+    set_min.Scroll()
+    $(".noon").scroll(set_hour.debounce(set_hour.showTop, 100,"noon"));
+
+    function submits (){
+        var noon = $(".noon>.sel_item").html();
+        var hour = $(".hour>.sel_item").html();
+        var min = $(".min>.sel_item").html();
+        console.log(noon,hour,min)
+        var time = noon+' '+hour+':'+min
+        console.log(time)
+        var week = $(".time_list .time_sel").data('typeid');
+        console.log(week)
+    }
+
+
+    $('.time_item').click(function (){
+        $(this).addClass("time_sel").siblings().removeClass("time_sel");
+    })
+
+
+    function colseshadow(){
+        $(".shadow,.focus_main").toggle()
+        window.location.reload()
+    }
+
+    var noon_nums ="{$takeoutinfo['noon']}";
+    var hour_nums= "{$takeoutinfo['hour_text']}";
+    var min_nums=  "{$takeoutinfo['minute_text']}";
+    noon_nums = noon_nums=="上午"?0:1;
+    hour_nums = Number(hour_nums)-1;
+    min_nums = Number(min_nums);
+    console.log(noon_nums,hour_nums,min_nums);
+    // 时间初始化时间初始化时间初始化时间初始化时间初始化
+    $(".noon").animate({ scrollTop: 40 * noon_nums }, 0);
+    $(".noon_item").eq(noon_nums + 2).addClass("sel_item").siblings().removeClass("sel_item");
+    $(".hour").animate({ scrollTop: 40 * hour_nums }, 0);
+    $(".hour_item").eq(hour_nums + 2).addClass("sel_item").siblings().removeClass("sel_item");
+    $(".min").animate({ scrollTop: 40 * min_nums }, 0);
+    $(".min_item").eq(min_nums + 2).addClass("sel_item").siblings().removeClass("sel_item");
+</script>
+</html>
